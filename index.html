@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vantage Thread Co. | Global Pop Culture & Streetwear Apparel</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        vibe: {
+                            950: '#07050D',
+                            900: '#0F0B18',
+                            800: '#1A132C',
+                            700: '#261C40',
+                        },
+                        neon: {
+                            lime: '#B4FF39',
+                            hover: '#9ee02d',
+                        },
+                        violetaccent: {
+                            DEFAULT: '#7C3AED',
+                            light: '#9061F9',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        heading: ['Manrope', 'sans-serif'],
+                    },
+                    container: {
+                        center: true,
+                        padding: '1.5rem',
+                        screens: {
+                            DEFAULT: '1200px',
+                        },
+                    },
+                },
+            },
+        }
+    </script>
+    
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #07050D; color: #E5E7EB; }
+        h1, h2, h3, h4, h5, h6 { font-family: 'Manrope', sans-serif; }
+        .glass-nav {
+            background: rgba(7, 5, 13, 0.85);
+            backdrop-filter: blur(12px);
+        }
+        [x-cloak] { display: none !important; }
+    </style>
+</head>
+<body class="bg-vibe-950 text-gray-200 antialiased selection:bg-neon-lime selection:text-vibe-950" 
+      x-data="{ 
+          mobileMenu: false, 
+          cartOpen: false, 
+          popupOpen: false, 
+          popupTitle: '', 
+          popupMessage: '', 
+          cart: [],
+          addToCart(name, price, image, size='L', color='Near-Black') {
+              let existing = this.cart.find(item => item.name === name && item.size === size && item.color === color);
+              if(existing) {
+                  existing.qty++;
+              } else {
+                  this.cart.push({ id: Date.now(), name, price, image, size, color, qty: 1 });
+              }
+              this.cartOpen = true;
+          },
+          get cartTotal() {
+              return this.cart.reduce((sum, item) => sum + (item.price * item.qty), 0).toFixed(2);
+          },
+          get cartCount() {
+              return this.cart.reduce((sum, item) => sum + item.qty, 0);
+          },
+          triggerPopup(title, msg) {
+              this.popupTitle = title;
+              this.popupMessage = msg;
+              this.popupOpen = true;
+          }
+      }">
+
+    <div class="bg-neon-lime text-vibe-950 text-xs md:text-sm font-bold py-2.5 px-4 text-center tracking-wide sticky top-0 z-50 flex items-center justify-center gap-2 shadow-md">
+        <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+        <span><strong>GLOBAL SHIPPING:</strong> Free Express Shipping Worldwide on Orders Over $120. Use Code <span class="underline uppercase">VANTAGE20</span> for 20% Off!</span>
+    </div>
+
+    <header id="navbar" class="sticky top-[41px] z-40 transition-all duration-300 glass-nav border-b border-vibe-800">
+        <div class="container mx-auto h-20 flex items-center justify-between">
+            <a href="#" class="flex items-center gap-3 group">
+                <div class="w-10 h-10 rounded bg-neon-lime flex items-center justify-center text-vibe-950 font-black text-xl shadow-lg group-hover:scale-105 transition-transform">
+                    V
+                </div>
+                <div>
+                    <span class="block font-heading font-extrabold text-lg text-white tracking-tight leading-none">VANTAGE</span>
+                    <span class="text-[10px] tracking-widest text-neon-lime font-bold uppercase">Thread Co.</span>
+                </div>
+            </a>
+
+            <nav class="hidden lg:flex items-center gap-8 text-sm font-medium text-gray-300">
+                <a href="#tshirts" class="hover:text-neon-lime transition-colors">T-Shirts</a>
+                <a href="#hoodies" class="hover:text-neon-lime transition-colors">Hoodies</a>
+                <a href="#themes" class="hover:text-neon-lime transition-colors">Themes</a>
+                <a href="#featured" class="hover:text-neon-lime transition-colors">Featured Drop</a>
+                <a href="#reviews" class="hover:text-neon-lime transition-colors">Reviews</a>
+                <a href="#faq" class="hover:text-neon-lime transition-colors">FAQ</a>
+            </nav>
+
+            <div class="flex items-center gap-5">
+                <button @click="cartOpen = true" class="relative bg-vibe-800 hover:bg-vibe-700 p-2.5 rounded-full border border-vibe-700 text-white transition-colors flex items-center justify-center">
+                    <svg class="w-5 h-5 text-neon-lime" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+                    <span class="absolute -top-1.5 -right-1.5 bg-neon-lime text-vibe-950 text-[10px] font-black w-5 h-5 rounded-full flex items-center justify-center shadow" x-text="cartCount">0</span>
+                </button>
+                <button @click="mobileMenu = !mobileMenu" class="lg:hidden text-gray-300 hover:text-white focus:outline-none">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                </button>
+            </div>
+        </div>
+
+        <div x-show="mobileMenu" @click.away="mobileMenu = false" x-cloak class="lg:hidden bg-vibe-900 border-b border-vibe-800 px-6 py-4 space-y-3">
+            <a href="#tshirts" @click="mobileMenu = false" class="block text-sm font-medium text-gray-300 hover:text-neon-lime">T-Shirts</a>
+            <a href="#hoodies" @click="mobileMenu = false" class="block text-sm font-medium text-gray-300 hover:text-neon-lime">Hoodies</a>
+            <a href="#themes" @click="mobileMenu = false" class="block text-sm font-medium text-gray-300 hover:text-neon-lime">Themes</a>
+            <a href="#featured" @click="mobileMenu = false" class="block text-sm font-medium text-gray-300 hover:text-neon-lime">Featured Drop</a>
+            <a href="#reviews" @click="mobileMenu = false" class="block text-sm font-medium text-gray-300 hover:text-neon-lime">Reviews</a>
+            <a href="#faq" @click="mobileMenu = false" class="block text-sm font-medium text-gray-300 hover:text-neon-lime">FAQ</a>
+        </div>
+    </header>
+
+    <main>
+        <section class="relative h-[100vh] min-h-[650px] flex items-center justify-center overflow-hidden">
+            <div class="absolute inset-0 z-0">
+                <img src="https://picsum.photos/seed/vantageherostreetwearlifestyle/1600/900" alt="Vantage Thread Co Streetwear Lifestyle Hero" class="w-full h-full object-cover object-center scale-105 animate-pulse duration-1000">
+                <div class="absolute inset-0 bg-gradient-to-r from-vibe-950 via-vibe-950/80 to-vibe-950/50"></div>
+                <div class="absolute inset-0 bg-radial-at-c from-transparent via-vibe-950/30 to-vibe-950/90"></div>
+            </div>
+
+            <div class="container mx-auto relative z-10 px-6 pt-16">
+                <div class="max-w-3xl space-y-6">
+                    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-vibe-800 border border-neon-lime/40 text-xs font-bold text-neon-lime shadow-lg">
+                        <span class="w-2 h-2 rounded-full bg-neon-lime animate-ping"></span>
+                        LIMITED DROP ACTIVE — USE CODE <span class="underline">VANTAGE20</span> FOR 20% OFF
+                    </div>
+
+                    <h1 class="font-heading font-extrabold text-white text-4xl sm:text-5xl md:text-7xl tracking-tight leading-[1.05]" style="font-size: clamp(2.75rem, 6vw, 5rem);">
+                        Culture-Driven <span class="text-transparent bg-clip-text bg-gradient-to-r from-neon-lime to-violetaccent-light">Streetwear & Apparel</span>
+                    </h1>
+
+                    <p class="text-gray-300 text-lg sm:text-xl font-normal max-w-2xl leading-relaxed">
+                        Original graphic t-shirts and heavyweight hoodies inspired by gaming, retro nostalgia, and pop culture. Premium heavyweight cotton, crafted for global creators.
+                    </p>
+
+                    <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-4">
+                        <a href="#tshirts" class="bg-neon-lime hover:bg-neon-hover text-vibe-950 font-extrabold uppercase tracking-wider text-sm px-8 py-4 rounded transition-all shadow-xl hover:shadow-neon-lime/20 text-center">
+                            Shop Worldwide Now
+                        </a>
+                        <a href="#featured" class="bg-vibe-800/80 hover:bg-vibe-700 text-white border border-vibe-700 font-semibold text-sm px-8 py-4 rounded transition-all text-center backdrop-blur">
+                            Explore Featured Drop
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="tshirts" class="py-24 bg-vibe-950" x-data="{ currentFilter: 'all' }">
+            <div class="container mx-auto">
+                <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+                    <div class="space-y-3">
+                        <span class="text-neon-lime text-xs font-bold uppercase tracking-widest">Original Graphics</span>
+                        <h2 class="font-heading font-extrabold text-3xl sm:text-4xl text-white">Best-Selling T-Shirts</h2>
+                    </div>
+                    <div class="flex flex-wrap gap-2 text-xs font-semibold">
+                        <button @click="currentFilter = 'all'" :class="currentFilter === 'all' ? 'bg-neon-lime text-vibe-950' : 'bg-vibe-800 text-gray-300 hover:text-white'" class="px-4 py-2 rounded transition-colors">All</button>
+                        <button @click="currentFilter = 'gaming'" :class="currentFilter === 'gaming' ? 'bg-neon-lime text-vibe-950' : 'bg-vibe-800 text-gray-300 hover:text-white'" class="px-4 py-2 rounded transition-colors">Gaming</button>
+                        <button @click="currentFilter = 'retro'" :class="currentFilter === 'retro' ? 'bg-neon-lime text-vibe-950' : 'bg-vibe-800 text-gray-300 hover:text-white'" class="px-4 py-2 rounded transition-colors">Retro</button>
+                        <button @click="currentFilter = 'pop'" :class="currentFilter === 'pop' ? 'bg-neon-lime text-vibe-950' : 'bg-vibe-800 text-gray-300 hover:text-white'" class="px-4 py-2 rounded transition-colors">Pop Culture</button>
+                        <button @click="currentFilter = 'rock'" :class="currentFilter === 'rock' ? 'bg-neon-lime text-vibe-950' : 'bg-vibe-800 text-gray-300 hover:text-white'" class="px-4 py-2 rounded transition-colors">Rock & Synth</button>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <div class="bg-vibe-900 rounded-lg overflow-hidden border border-vibe-800 group" x-show="currentFilter === 'all' || currentFilter === 'gaming'">
+                        <div class="h-80 overflow-hidden relative bg-vibe-800">
+                            <img src="https://picsum.photos/seed/cyberpunkarcade8bittee/600/800" alt="Cyber Arcade Tee" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            <span class="absolute top-3 left-3 bg-neon-lime text-vibe-950 text-[10px] font-extrabold uppercase px-2.5 py-1 rounded">Best Seller</span>
+                        </div>
+                        <div class="p-5 space-y-3">
+                            <div class="flex justify-between items-start">
+                                <h3 class="font-heading font-bold text-white text-base">Cyber Arcade Tee</h3>
+                                <span class="font-bold text-neon-lime text-base">$38.00</span>
+                            </div>
+                            <p class="text-gray-400 text-xs">Heavyweight 240GSM combed cotton, vintage wash finish.</p>
+                            <button @click="addToCart('Cyber Arcade Tee', 38.00, 'https://picsum.photos/seed/cyberpunkarcade8bittee/600/800')" class="w-full bg-vibe-800 hover:bg-neon-lime hover:text-vibe-950 text-white font-bold text-xs uppercase py-3 rounded transition-all">
+                                Quick Add
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="bg-vibe-900 rounded-lg overflow-hidden border border-vibe-800 group" x-show="currentFilter === 'all' || currentFilter === 'retro'">
+                        <div class="h-80 overflow-hidden relative bg-vibe-800">
+                            <img src="https://picsum.photos/seed/synthwavevintagesunsettshirt/600/800" alt="Synthwave Sunset Tee" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            <span class="absolute top-3 left-3 bg-violetaccent text-white text-[10px] font-extrabold uppercase px-2.5 py-1 rounded">New Drop</span>
+                        </div>
+                        <div class="p-5 space-y-3">
+                            <div class="flex justify-between items-start">
+                                <h3 class="font-heading font-bold text-white text-base">Synthwave Sunset Tee</h3>
+                                <span class="font-bold text-neon-lime text-base">$38.00</span>
+                            </div>
+                            <p class="text-gray-400 text-xs">Soft-hand screen print on pigment-dyed charcoal cotton.</p>
+                            <button @click="addToCart('Synthwave Sunset Tee', 38.00, 'https://picsum.photos/seed/synthwavevintagesunsettshirt/600/800')" class="w-full bg-vibe-800 hover:bg-neon-lime hover:text-vibe-950 text-white font-bold text-xs uppercase py-3 rounded transition-all">
+                                Quick Add
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="bg-vibe-900 rounded-lg overflow-hidden border border-vibe-800 group" x-show="currentFilter === 'all' || currentFilter === 'pop'">
+                        <div class="h-80 overflow-hidden relative bg-vibe-800">
+                            <img src="https://picsum.photos/seed/neonotakuanimetee/600/800" alt="Neon Otaku Tee" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        </div>
+                        <div class="p-5 space-y-3">
+                            <div class="flex justify-between items-start">
+                                <h3 class="font-heading font-bold text-white text-base">Neon Otaku Tee</h3>
+                                <span class="font-bold text-neon-lime text-base">$40.00</span>
+                            </div>
+                            <p class="text-gray-400 text-xs">Original anime-inspired multi-color chest print.</p>
+                            <button @click="addToCart('Neon Otaku Tee', 40.00, 'https://picsum.photos/seed/neonotakuanimetee/600/800')" class="w-full bg-vibe-800 hover:bg-neon-lime hover:text-vibe-950 text-white font-bold text-xs uppercase py-3 rounded transition-all">
+                                Quick Add
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="bg-vibe-900 rounded-lg overflow-hidden border border-vibe-800 group" x-show="currentFilter === 'all' || currentFilter === 'rock'">
+                        <div class="h-80 overflow-hidden relative bg-vibe-800">
+                            <img src="https://picsum.photos/seed/lofigroovevinylrecordtee/600/800" alt="Lo-Fi Groove Tee" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        </div>
+                        <div class="p-5 space-y-3">
+                            <div class="flex justify-between items-start">
+                                <h3 class="font-heading font-bold text-white text-base">Lo-Fi Groove Tee</h3>
+                                <span class="font-bold text-neon-lime text-base">$38.00</span>
+                            </div>
+                            <p class="text-gray-400 text-xs">Relaxed boxy fit for ultimate streetwear drape.</p>
+                            <button @click="addToCart('Lo-Fi Groove Tee', 38.00, 'https://picsum.photos/seed/lofigroovevinylrecordtee/600/800')" class="w-full bg-vibe-800 hover:bg-neon-lime hover:text-vibe-950 text-white font-bold text-xs uppercase py-3 rounded transition-all">
+                                Quick Add
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="hoodies" class="py-24 bg-vibe-900 border-y border-vibe-800">
+            <div class="container mx-auto">
+                <div class="text-center max-w-2xl mx-auto mb-16 space-y-3">
+                    <span class="text-neon-lime text-xs font-bold uppercase tracking-widest">Heavyweight Comfort</span>
+                    <h2 class="font-heading font-extrabold text-3xl sm:text-4xl text-white">Best-Selling Hoodies</h2>
+                    <p class="text-gray-400 text-sm">450GSM ultra-heavy French Terry cotton, double-lined hoods, and custom metal hardware.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="bg-vibe-950 rounded-lg overflow-hidden border border-vibe-800 group">
+                        <div class="h-80 overflow-hidden relative bg-vibe-900">
+                            <img src="https://picsum.photos/seed/cyberpunkheavyweighthoodieblack/800/800" alt="Cyberpunk Heavyweight Hoodie" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            <span class="absolute top-3 left-3 bg-neon-lime text-vibe-950 text-[10px] font-extrabold uppercase px-2.5 py-1 rounded">Signature</span>
+                        </div>
+                        <div class="p-6 space-y-3">
+                            <div class="flex justify-between items-start">
+                                <h3 class="font-heading font-bold text-white text-lg">Cyberpunk Heavyweight Hoodie</h3>
+                                <span class="font-bold text-neon-lime text-lg">$85.00</span>
+                            </div>
+                            <p class="text-gray-400 text-xs">Oversized drop-shoulder fit with embroidered back graphic.</p>
+                            <button @click="addToCart('Cyberpunk Heavyweight Hoodie', 85.00, 'https://picsum.photos/seed/cyberpunkheavyweighthoodieblack/800/800')" class="w-full bg-vibe-800 hover:bg-neon-lime hover:text-vibe-950 text-white font-bold text-xs uppercase py-3 rounded transition-all">
+                                Quick Add
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="bg-vibe-950 rounded-lg overflow-hidden border border-vibe-800 group">
+                        <div class="h-80 overflow-hidden relative bg-vibe-900">
+                            <img src="https://picsum.photos/seed/retrogamingpixelartashgreyhoodie/800/800" alt="Retro Pixel Hoodie" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        </div>
+                        <div class="p-6 space-y-3">
+                            <div class="flex justify-between items-start">
+                                <h3 class="font-heading font-bold text-white text-lg">Retro Pixel Hoodie</h3>
+                                <span class="font-bold text-neon-lime text-lg">$80.00</span>
+                            </div>
+                            <p class="text-gray-400 text-xs">Ash grey heavy fleece with vintage 8-bit chest embroidery.</p>
+                            <button @click="addToCart('Retro Pixel Hoodie', 80.00, 'https://picsum.photos/seed/retrogamingpixelartashgreyhoodie/800/800')" class="w-full bg-vibe-800 hover:bg-neon-lime hover:text-vibe-950 text-white font-bold text-xs uppercase py-3 rounded transition-all">
+                                Quick Add
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="bg-vibe-950 rounded-lg overflow-hidden border border-vibe-800 group">
+                        <div class="h-80 overflow-hidden relative bg-vibe-900">
+                            <img src="https://picsum.photos/seed/neonabstractglitchvioletpurplehoodie/800/800" alt="Neon Glitch Hoodie" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        </div>
+                        <div class="p-6 space-y-3">
+                            <div class="flex justify-between items-start">
+                                <h3 class="font-heading font-bold text-white text-lg">Neon Glitch Hoodie</h3>
+                                <span class="font-bold text-neon-lime text-lg">$85.00</span>
+                            </div>
+                            <p class="text-gray-400 text-xs">Vibrant violet wash with high-density puff print detailing.</p>
+                            <button @click="addToCart('Neon Glitch Hoodie', 85.00, 'https://picsum.photos/seed/neonabstractglitchvioletpurplehoodie/800/800')" class="w-full bg-vibe-800 hover:bg-neon-lime hover:text-vibe-950 text-white font-bold text-xs uppercase py-3 rounded transition-all">
+                                Quick Add
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="themes" class="py-24 bg-vibe-950">
+            <div class="container mx-auto">
+                <div class="text-center max-w-2xl mx-auto mb-16 space-y-3">
+                    <span class="text-neon-lime text-xs font-bold uppercase tracking-widest">Collections</span>
+                    <h2 class="font-heading font-extrabold text-3xl sm:text-4xl text-white">Shop by Inspiration & Vibe</h2>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <a href="#tshirts" class="relative h-96 rounded-lg overflow-hidden group border border-vibe-800 block">
+                        <img src="https://picsum.photos/seed/gamingarcadeesportsculture/600/800" alt="Gaming Culture" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-t from-vibe-950 via-vibe-950/40 to-transparent"></div>
+                        <div class="absolute bottom-6 left-6 right-6 space-y-2">
+                            <h3 class="font-heading font-bold text-2xl text-white">Gaming & Esports</h3>
+                            <p class="text-neon-lime text-xs font-semibold uppercase tracking-wider">Explore Collection &rarr;</p>
+                        </div>
+                    </a>
+
+                    <a href="#tshirts" class="relative h-96 rounded-lg overflow-hidden group border border-vibe-800 block">
+                        <img src="https://picsum.photos/seed/retrovideogamesarcade80s/600/800" alt="Retro Nostalgia" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-t from-vibe-950 via-vibe-950/40 to-transparent"></div>
+                        <div class="absolute bottom-6 left-6 right-6 space-y-2">
+                            <h3 class="font-heading font-bold text-2xl text-white">Retro 80s/90s</h3>
+                            <p class="text-neon-lime text-xs font-semibold uppercase tracking-wider">Explore Collection &rarr;</p>
+                        </div>
+                    </a>
+
+                    <a href="#tshirts" class="relative h-96 rounded-lg overflow-hidden group border border-vibe-800 block">
+                        <img src="https://picsum.photos/seed/popcultureanimationmanga/600/800" alt="Pop Culture" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-t from-vibe-950 via-vibe-950/40 to-transparent"></div>
+                        <div class="absolute bottom-6 left-6 right-6 space-y-2">
+                            <h3 class="font-heading font-bold text-2xl text-white">Pop Culture & Anime</h3>
+                            <p class="text-neon-lime text-xs font-semibold uppercase tracking-wider">Explore Collection &rarr;</p>
+                        </div>
+                    </a>
+
+                    <a href="#tshirts" class="relative h-96 rounded-lg overflow-hidden group border border-vibe-800 block">
+                        <img src="https://picsum.photos/seed/synthwaveelectronicmusicconcert/600/800" alt="Synthwave & Music" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-t from-vibe-950 via-vibe-950/40 to-transparent"></div>
+                        <div class="absolute bottom-6 left-6 right-6 space-y-2">
+                            <h3 class="font-heading font-bold text-2xl text-white">Synthwave & Music</h3>
+                            <p class="text-neon-lime text-xs font-semibold uppercase tracking-wider">Explore Collection &rarr;</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-24 bg-vibe-900 border-y border-vibe-800">
+            <div class="container mx-auto">
+                <div class="text-center max-w-2xl mx-auto mb-16 space-y-3">
+                    <span class="text-neon-lime text-xs font-bold uppercase tracking-widest">Our Standards</span>
+                    <h2 class="font-heading font-extrabold text-3xl sm:text-4xl text-white">What Sets Vantage Apart</h2>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="bg-vibe-950 p-8 rounded-lg border border-vibe-800 space-y-4">
+                        <div class="w-12 h-12 rounded bg-neon-lime/10 text-neon-lime flex items-center justify-center font-bold text-xl">
+                            01
+                        </div>
+                        <h3 class="font-heading font-bold text-xl text-white">100% Original Designs</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed">Every graphic is drawn by our in-house collective of illustrators and pop culture enthusiasts. No generic stock art.</p>
+                    </div>
+
+                    <div class="bg-vibe-950 p-8 rounded-lg border border-vibe-800 space-y-4">
+                        <div class="w-12 h-12 rounded bg-neon-lime/10 text-neon-lime flex items-center justify-center font-bold text-xl">
+                            02
+                        </div>
+                        <h3 class="font-heading font-bold text-xl text-white">Heavyweight Construction</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed">Built for longevity. Our tees and hoodies feature dense, ring-spun cotton that withstands countless washes without losing shape.</p>
+                    </div>
+
+                    <div class="bg-vibe-950 p-8 rounded-lg border border-vibe-800 space-y-4">
+                        <div class="w-12 h-12 rounded bg-neon-lime/10 text-neon-lime flex items-center justify-center font-bold text-xl">
+                            03
+                        </div>
+                        <h3 class="font-heading font-bold text-xl text-white">Global Express Fulfillment</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed">We ship directly from fulfillment hubs in North America and Europe, ensuring lightning-fast delivery worldwide.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="featured" class="py-24 bg-vibe-950" x-data="{ selectedSize: 'L', selectedColor: 'Charcoal Black', qty: 1 }">
+            <div class="container mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div class="rounded-lg overflow-hidden border border-vibe-800 bg-vibe-900 h-[500px]">
+                    <img src="https://picsum.photos/seed/cyberpunklimitededitionsignaturehoodie/800/1000" alt="Featured Signature Drop" class="w-full h-full object-cover">
+                </div>
+                <div class="space-y-6">
+                    <span class="text-neon-lime text-xs font-bold uppercase tracking-widest">Featured Signature Drop</span>
+                    <h2 class="font-heading font-extrabold text-3xl sm:text-4xl text-white">Cyber-Nexus Heavyweight Collector Hoodie</h2>
+                    <p class="text-2xl font-bold text-neon-lime">$95.00 <span class="text-xs text-gray-400 font-normal line-through ml-2">$120.00</span></p>
+                    <p class="text-gray-300 text-sm leading-relaxed">
+                        Our flagship collector piece featuring glow-in-the-dark reactive sleeve embroidery, custom laser-engraved metal aglets, and 500GSM ultra-dense organic cotton fleece. Limited to 500 numbered pieces worldwide.
+                    </p>
+
+                    <div class="space-y-2">
+                        <label class="block text-xs font-bold uppercase tracking-wider text-gray-400">Select Size: <span class="text-white" x-text="selectedSize"></span></label>
+                        <div class="flex gap-3">
+                            <button @click="selectedSize = 'S'" :class="selectedSize === 'S' ? 'bg-neon-lime text-vibe-950 font-bold' : 'bg-vibe-900 text-gray-300 border border-vibe-800'" class="w-12 h-12 rounded transition-colors">S</button>
+                            <button @click="selectedSize = 'M'" :class="selectedSize === 'M' ? 'bg-neon-lime text-vibe-950 font-bold' : 'bg-vibe-900 text-gray-300 border border-vibe-800'" class="w-12 h-12 rounded transition-colors">M</button>
+                            <button @click="selectedSize = 'L'" :class="selectedSize === 'L' ? 'bg-neon-lime text-vibe-950 font-bold' : 'bg-vibe-900 text-gray-300 border border-vibe-800'" class="w-12 h-12 rounded transition-colors">L</button>
+                            <button @click="selectedSize = 'XL'" :class="selectedSize === 'XL' ? 'bg-neon-lime text-vibe-950 font-bold' : 'bg-vibe-900 text-gray-300 border border-vibe-800'" class="w-12 h-12 rounded transition-colors">XL</button>
+                            <button @click="selectedSize = '2XL'" :class="selectedSize === '2XL' ? 'bg-neon-lime text-vibe-950 font-bold' : 'bg-vibe-900 text-gray-300 border border-vibe-800'" class="w-12 h-12 rounded transition-colors">2XL</button>
+                        </div>
+                    </div>
+
+                    <div class="space-y-2">
+                        <label class="block text-xs font-bold uppercase tracking-wider text-gray-400">Color: <span class="text-white" x-text="selectedColor"></span></label>
+                        <div class="flex gap-3">
+                            <button @click="selectedColor = 'Charcoal Black'" :class="selectedColor === 'Charcoal Black' ? 'ring-2 ring-neon-lime' : ''" class="w-8 h-8 rounded-full bg-vibe-800 border border-vibe-700"></button>
+                            <button @click="selectedColor = 'Matrix Green'" :class="selectedColor === 'Matrix Green' ? 'ring-2 ring-neon-lime' : ''" class="w-8 h-8 rounded-full bg-emerald-900 border border-vibe-700"></button>
+                            <button @click="selectedColor = 'Neon Violet'" :class="selectedColor === 'Neon Violet' ? 'ring-2 ring-neon-lime' : ''" class="w-8 h-8 rounded-full bg-violet-900 border border-vibe-700"></button>
+                        </div>
+                    </div>
+
+                    <div class="pt-4 flex gap-4">
+                        <button @click="addToCart('Cyber-Nexus Collector Hoodie', 95.00, 'https://picsum.photos/seed/cyberpunklimitededitionsignaturehoodie/800/1000', selectedSize, selectedColor)" class="flex-1 bg-neon-lime hover:bg-neon-hover text-vibe-950 font-extrabold uppercase tracking-wider text-sm py-4 rounded transition-all shadow-lg">
+                            Add to Cart — $95.00
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="reviews" class="py-24 bg-vibe-900 border-y border-vibe-800">
+            <div class="container mx-auto">
+                <div class="text-center max-w-2xl mx-auto mb-16 space-y-3">
+                    <span class="text-neon-lime text-xs font-bold uppercase tracking-widest">Verified Feedback</span>
+                    <h2 class="font-heading font-extrabold text-3xl sm:text-4xl text-white">What Creators Are Saying</h2>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="bg-vibe-950 p-8 rounded-lg border border-vibe-800 space-y-4">
+                        <div class="text-neon-lime font-bold">★★★★★</div>
+                        <p class="text-gray-300 text-sm italic">"The cotton weight on these hoodies is insane. Wore it to my streaming setup and all my chat members asked where I got it. Fast shipping to Tokyo too!"</p>
+                        <div class="flex items-center gap-3 pt-2">
+                            <img src="https://picsum.photos/seed/reviewerkentoakiratokyo/100/100" alt="Kento A." class="w-10 h-10 rounded-full object-cover">
+                            <div>
+                                <h4 class="font-heading font-bold text-white text-xs">Kento A.</h4>
+                                <p class="text-gray-400 text-[10px]">Tokyo, Japan</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-vibe-950 p-8 rounded-lg border border-vibe-800 space-y-4">
+                        <div class="text-neon-lime font-bold">★★★★★</div>
+                        <p class="text-gray-300 text-sm italic">"Finally a brand doing pop culture graphic tees that don't shrink or fade after one wash. The print quality feels buttery smooth."</p>
+                        <div class="flex items-center gap-3 pt-2">
+                            <img src="https://picsum.photos/seed/reviewerelainelondonuk/100/100" alt="Elaine M." class="w-10 h-10 rounded-full object-cover">
+                            <div>
+                                <h4 class="font-heading font-bold text-white text-xs">Elaine M.</h4>
+                                <p class="text-gray-400 text-[10px]">London, UK</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-vibe-950 p-8 rounded-lg border border-vibe-800 space-y-4">
+                        <div class="text-neon-lime font-bold">★★★★★</div>
+                        <p class="text-gray-300 text-sm italic">"Ordered the Cyber Arcade Tee and it arrived in NYC within 3 days. Packaging was sick with sticker slaps included. 10/10."</p>
+                        <div class="flex items-center gap-3 pt-2">
+                            <img src="https://picsum.photos/seed/reviewermarcusnewyork/100/100" alt="Marcus T." class="w-10 h-10 rounded-full object-cover">
+                            <div>
+                                <h4 class="font-heading font-bold text-white text-xs">Marcus T.</h4>
+                                <p class="text-gray-400 text-[10px]">New York, USA</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-24 bg-vibe-950">
+            <div class="container mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div class="space-y-6">
+                    <span class="text-neon-lime text-xs font-bold uppercase tracking-widest">Upcoming Release</span>
+                    <h2 class="font-heading font-extrabold text-3xl sm:text-4xl text-white">Next Drop: Cyber-Samurai Capsule</h2>
+                    <p class="text-gray-300 text-sm leading-relaxed">
+                        Dropping this Friday at 12 PM EST. Featuring oversized washed hoodies, heavy cotton long-sleeves, and reflective nylon cargo pants inspired by dystopian cyberpunk aesthetics.
+                    </p>
+                    <div class="flex gap-4">
+                        <div class="bg-vibe-900 border border-vibe-800 px-4 py-3 rounded text-center">
+                            <span class="block font-heading font-bold text-xl text-white">03</span>
+                            <span class="text-[10px] text-gray-400 uppercase tracking-widest">Days</span>
+                        </div>
+                        <div class="bg-vibe-900 border border-vibe-800 px-4 py-3 rounded text-center">
+                            <span class="block font-heading font-bold text-xl text-white">14</span>
+                            <span class="text-[10px] text-gray-400 uppercase tracking-widest">Hours</span>
+                        </div>
+                        <div class="bg-vibe-900 border border-vibe-800 px-4 py-3 rounded text-center">
+                            <span class="block font-heading font-bold text-xl text-white">45</span>
+                            <span class="text-[10px] text-gray-400 uppercase tracking-widest">Mins</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="rounded-lg overflow-hidden border border-vibe-800 h-80">
+                    <img src="https://picsum.photos/seed/cybersamuraiupcomingdropfashion/800/600" alt="Cyber Samurai Drop" class="w-full h-full object-cover">
+                </div>
+            </div>
+        </section>
+
+        <section class="py-24 bg-vibe-900 border-y border-vibe-800">
+            <div class="container mx-auto max-w-4xl text-center space-y-6">
+                <span class="text-neon-lime text-xs font-bold uppercase tracking-widest">Our Roots</span>
+                <h2 class="font-heading font-extrabold text-3xl sm:text-4xl text-white">Built by Gamers, Artists, and Night Owls</h2>
+                <p class="text-gray-300 text-base leading-relaxed">
+                    Vantage Thread Co. was born out of a frustration with cheap, uninspired merch. We wanted streetwear that authentically reflects the gaming, retro tech, and pop culture subcultures we grew up living and breathing. Every piece is a tribute to the aesthetics that shaped us.
+                </p>
+            </div>
+        </section>
+
+        <section class="py-24 bg-vibe-950">
+            <div class="container mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                <div class="rounded-lg overflow-hidden border border-vibe-800 h-80">
+                    <img src="https://picsum.photos/seed/ecofriendlyorganiccottonfabricprintquality/800/600" alt="Sustainability and Quality" class="w-full h-full object-cover">
+                </div>
+                <div class="space-y-6">
+                    <span class="text-neon-lime text-xs font-bold uppercase tracking-widest">Eco & Craft</span>
+                    <h2 class="font-heading font-extrabold text-3xl sm:text-4xl text-white">Conscious Production & Premium Inks</h2>
+                    <p class="text-gray-300 text-sm leading-relaxed">
+                        We use 100% GOTS-certified organic cotton, water-based biodegradable inks that soften naturally into the fabric over time, and zero single-use plastic in our shipping mailers. Look good while protecting the planet.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section id="faq" class="py-24 bg-vibe-900 border-y border-vibe-800">
+            <div class="container mx-auto max-w-4xl" x-data="{ openFaq: null }">
+                <div class="text-center mb-16 space-y-3">
+                    <span class="text-neon-lime text-xs font-bold uppercase tracking-widest">Help Center</span>
+                    <h2 class="font-heading font-extrabold text-3xl sm:text-4xl text-white">Frequently Asked Questions</h2>
+                </div>
+
+                <div class="space-y-4">
+                    <div class="bg-vibe-950 rounded-lg border border-vibe-800 overflow-hidden">
+                        <button @click="openFaq !== 1 ? openFaq = 1 : openFaq = null" class="w-full px-6 py-4 text-left font-heading font-bold text-white flex justify-between items-center">
+                            <span>How long does worldwide shipping take?</span>
+                            <span class="text-neon-lime text-xl" x-text="openFaq === 1 ? '−' : '+'">+</span>
+                        </button>
+                        <div x-show="openFaq === 1" class="px-6 pb-4 text-gray-400 text-sm leading-relaxed">
+                            Orders are dispatched within 24 hours. Standard international shipping takes 5-10 business days. Express shipping options at checkout deliver in 2-4 business days globally.
+                        </div>
+                    </div>
+
+                    <div class="bg-vibe-950 rounded-lg border border-vibe-800 overflow-hidden">
+                        <button @click="openFaq !== 2 ? openFaq = 2 : openFaq = null" class="w-full px-6 py-4 text-left font-heading font-bold text-white flex justify-between items-center">
+                            <span>What is your international return policy?</span>
+                            <span class="text-neon-lime text-xl" x-text="openFaq === 2 ? '−' : '+'">+</span>
+                        </button>
+                        <div x-show="openFaq === 2" class="px-6 pb-4 text-gray-400 text-sm leading-relaxed">
+                            We offer 30-day hassle-free returns and size exchanges worldwide. Pre-paid return labels are provided for US, EU, UK, and Canada customers.
+                        </div>
+                    </div>
+
+                    <div class="bg-vibe-950 rounded-lg border border-vibe-800 overflow-hidden">
+                        <button @click="openFaq !== 3 ? openFaq = 3 : openFaq = null" class="w-full px-6 py-4 text-left font-heading font-bold text-white flex justify-between items-center">
+                            <span>How do your t-shirts and hoodies fit?</span>
+                            <span class="text-neon-lime text-xl" x-text="openFaq === 3 ? '−' : '+'">+</span>
+                        </button>
+                        <div x-show="openFaq === 3" class="px-6 pb-4 text-gray-400 text-sm leading-relaxed">
+                            Our garments feature an authentic modern streetwear fit. Tees have a slightly relaxed drop-shoulder cut, while hoodies are oversized boxy fits. Stick to your normal size for the intended look.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-24 bg-vibe-950">
+            <div class="container mx-auto max-w-2xl text-center space-y-6">
+                <span class="text-neon-lime text-xs font-bold uppercase tracking-widest">VIP Access</span>
+                <h2 class="font-heading font-extrabold text-3xl text-white">Get 15% Off Your First Drop</h2>
+                <form @submit.prevent="triggerPopup('Discount Unlocked!', 'Check your inbox for your exclusive 15% discount code.')" class="flex flex-col sm:flex-row gap-3">
+                    <input type="email" required placeholder="Enter your email address" class="flex-1 bg-vibe-900 border border-vibe-800 rounded px-4 py-3 text-white text-sm focus:outline-none focus:border-neon-lime">
+                    <button type="submit" class="bg-neon-lime hover:bg-neon-hover text-vibe-950 font-extrabold uppercase text-xs px-6 py-3 rounded transition-colors">Claim Code</button>
+                </form>
+            </div>
+        </section>
+
+        <section class="py-16 bg-vibe-900 border-t border-vibe-800">
+            <div class="container mx-auto max-w-4xl text-center space-y-6">
+                <span class="text-neon-lime text-xs font-bold uppercase tracking-widest">Fit Matrix</span>
+                <h3 class="font-heading font-bold text-2xl text-white">Size Guide (Inches)</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm text-gray-300 bg-vibe-950 rounded-lg border border-vibe-800">
+                        <thead class="bg-vibe-800 text-xs uppercase text-white">
+                            <tr>
+                                <th class="p-3">Size</th>
+                                <th class="p-3">Chest Width</th>
+                                <th class="p-3">Body Length</th>
+                                <th class="p-3">Sleeve Length</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-vibe-800">
+                            <tr><td class="p-3 font-bold text-white">S</td><td class="p-3">20"</td><td class="p-2.5">28"</td><td class="p-2.5">8.5"</td></tr>
+                            <tr><td class="p-3 font-bold text-white">M</td><td class="p-3">22"</td><td class="p-2.5">29"</td><td class="p-2.5">9.0"</td></tr>
+                            <tr><td class="p-3 font-bold text-white">L</td><td class="p-3">24"</td><td class="p-2.5">30"</td><td class="p-2.5">9.5"</td></tr>
+                            <tr><td class="p-3 font-bold text-white">XL</td><td class="p-3">26"</td><td class="p-2.5">31"</td><td class="p-2.5">10.0"</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-16 bg-vibe-950 border-t border-vibe-800">
+            <div class="container mx-auto max-w-2xl bg-vibe-900 p-8 rounded-lg border border-vibe-800 text-center space-y-4">
+                <span class="text-neon-lime text-xs font-bold uppercase tracking-widest">Digital E-Gift Card</span>
+                <h3 class="font-heading font-bold text-2xl text-white">Give the Gift of Streetwear</h3>
+                <p class="text-gray-400 text-sm">Delivered instantly via email. Redeemable on any t-shirt, hoodie, or future drop worldwide.</p>
+                <button @click="triggerPopup('Gift Card Generator', 'Gift card checkout simulation activated.')" class="bg-neon-lime hover:bg-neon-hover text-vibe-950 font-bold uppercase text-xs px-6 py-3 rounded transition-colors">
+                    Buy Gift Card
+                </button>
+            </div>
+        </section>
+
+        <section class="py-16 bg-vibe-900 border-t border-vibe-800">
+            <div class="container mx-auto max-w-2xl text-center space-y-4">
+                <span class="text-neon-lime text-xs font-bold uppercase tracking-widest">B2B Partnerships</span>
+                <h3 class="font-heading font-bold text-2xl text-white">Stock Vantage in Your Boutique or Store</h3>
+                <p class="text-gray-400 text-sm">We partner with selected retail boutiques across North America, Europe, and Asia.</p>
+                <button @click="triggerPopup('Wholesale Portal', 'Wholesale inquiry form submitted successfully.')" class="bg-vibe-800 hover:bg-vibe-700 text-white font-bold uppercase text-xs px-6 py-3 rounded border border-vibe-700 transition-colors">
+                    Inquire for Wholesale
+                </button>
+            </div>
+        </section>
+
+        <section class="py-24 bg-vibe-950 border-t border-vibe-800">
+            <div class="container mx-auto max-w-2xl">
+                <div class="bg-vibe-900 p-8 sm:p-12 rounded-lg border border-vibe-800 space-y-6">
+                    <div class="text-center space-y-2">
+                        <span class="text-neon-lime text-xs font-bold uppercase tracking-widest">24/7 Support</span>
+                        <h3 class="font-heading font-extrabold text-2xl text-white">Customer Support Hub</h3>
+                        <p class="text-gray-400 text-xs">Got questions about your order or shipping? Drop us a message.</p>
+                    </div>
+
+                    <form @submit.prevent="triggerPopup('Support Message Sent', 'Our support team will reply to your email within 4 hours.')" class="space-y-4">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <input type="text" required placeholder="Your Name" class="w-full bg-vibe-950 border border-vibe-800 rounded px-4 py-3 text-white text-sm focus:outline-none focus:border-neon-lime">
+                            <input type="email" required placeholder="Your Email" class="w-full bg-vibe-950 border border-vibe-800 rounded px-4 py-3 text-white text-sm focus:outline-none focus:border-neon-lime">
+                        </div>
+                        <textarea rows="4" required placeholder="How can we help you?" class="w-full bg-vibe-950 border border-vibe-800 rounded px-4 py-3 text-white text-sm focus:outline-none focus:border-neon-lime"></textarea>
+                        <button type="submit" class="w-full bg-neon-lime hover:bg-neon-hover text-vibe-950 font-bold uppercase text-xs py-3.5 rounded transition-colors">
+                            Send Message
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-16 bg-vibe-900 border-t border-vibe-800">
+            <div class="container mx-auto text-center space-y-8">
+                <div class="space-y-2">
+                    <span class="text-neon-lime text-xs font-bold uppercase tracking-widest">@VantageThreadCo</span>
+                    <h3 class="font-heading font-bold text-2xl text-white">Tagged in the Wild</h3>
+                </div>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="h-64 rounded overflow-hidden border border-vibe-800">
+                        <img src="https://picsum.photos/seed/streetwearfashiontiktokigpost1/400/400" alt="Instagram Post 1" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
+                    </div>
+                    <div class="h-64 rounded overflow-hidden border border-vibe-800">
+                        <img src="https://picsum.photos/seed/streetwearfashiontiktokigpost2/400/400" alt="Instagram Post 2" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
+                    </div>
+                    <div class="h-64 rounded overflow-hidden border border-vibe-800">
+                        <img src="https://picsum.photos/seed/streetwearfashiontiktokigpost3/400/400" alt="Instagram Post 3" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
+                    </div>
+                    <div class="h-64 rounded overflow-hidden border border-vibe-800">
+                        <img src="https://picsum.photos/seed/streetwearfashiontiktokigpost4/400/400" alt="Instagram Post 4" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div x-show="cartOpen" x-cloak class="fixed inset-0 z-50 flex justify-end bg-vibe-950/80 backdrop-blur-sm">
+        <div @click.away="cartOpen = false" class="w-full max-w-md bg-vibe-900 h-full flex flex-col border-l border-vibe-800 p-6 space-y-6 shadow-2xl">
+            <div class="flex items-center justify-between border-b border-vibe-800 pb-4">
+                <h3 class="font-heading font-bold text-xl text-white">Your Shopping Cart (<span x-text="cartCount"></span>)</h3>
+                <button @click="cartOpen = false" class="text-gray-400 hover:text-white text-xl">&times;</button>
+            </div>
+
+            <div class="flex-1 overflow-y-auto space-y-4">
+                <template x-for="item in cart" :key="item.id">
+                    <div class="flex gap-4 bg-vibe-950 p-3 rounded-lg border border-vibe-800 items-center">
+                        <img :src="item.image" class="w-16 h-16 object-cover rounded bg-vibe-800">
+                        <div class="flex-1 space-y-1">
+                            <h4 class="font-heading font-bold text-white text-xs" x-text="item.name"></h4>
+                            <p class="text-[10px] text-gray-400">Size: <span x-text="item.size"></span> | Color: <span x-text="item.color"></span></p>
+                            <p class="font-bold text-neon-lime text-xs" x-text="'$' + item.price.toFixed(2)"></p>
+                        </div>
+                        <div class="flex flex-col items-end gap-2">
+                            <span class="text-xs text-gray-300">Qty: <span x-text="item.qty"></span></span>
+                            <button @click="cart = cart.filter(i => i.id !== item.id)" class="text-red-400 text-xs hover:underline">Remove</button>
+                        </div>
+                    </div>
+                </template>
+                <div x-show="cart.length === 0" class="text-center py-16 text-gray-500 text-sm">
+                    Your cart is currently empty.
+                </div>
+            </div>
+
+            <div class="border-t border-vibe-800 pt-4 space-y-4">
+                <div class="flex justify-between items-center text-sm font-bold text-white">
+                    <span>Subtotal:</span>
+                    <span class="text-neon-lime text-lg" x-text="'$' + cartTotal"></span>
+                </div>
+                <button @click="triggerPopup('Secure Checkout', 'Redirecting to global encrypted checkout gateway...')" class="w-full bg-neon-lime hover:bg-neon-hover text-vibe-950 font-extrabold uppercase text-xs py-4 rounded transition-all shadow-lg">
+                    Proceed to Checkout
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-vibe-950 border-t border-vibe-800 text-gray-400 text-sm py-12">
+        <div class="container mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
+            <div class="space-y-4">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded bg-neon-lime flex items-center justify-center text-vibe-950 font-black">V</div>
+                    <span class="font-heading font-extrabold text-white text-lg tracking-tight">VANTAGE THREAD CO.</span>
+                </div>
+                <p class="text-xs text-gray-500 leading-relaxed">
+                    Global streetwear brand crafting original graphic apparel inspired by gaming, retro technology, and pop culture.
+                </p>
+            </div>
+            <div>
+                <h4 class="font-heading font-bold text-white text-xs uppercase tracking-wider mb-4">Collections</h4>
+                <ul class="space-y-2 text-xs">
+                    <li><a href="#tshirts" class="hover:text-neon-lime transition-colors">Graphic T-Shirts</a></li>
+                    <li><a href="#hoodies" class="hover:text-neon-lime transition-colors">Heavyweight Hoodies</a></li>
+                    <li><a href="#themes" class="hover:text-neon-lime transition-colors">Gaming Apparel</a></li>
+                    <li><a href="#themes" class="hover:text-neon-lime transition-colors">Retro & Synthwave</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-heading font-bold text-white text-xs uppercase tracking-wider mb-4">Support & Policy</h4>
+                <ul class="space-y-2 text-xs">
+                    <li><a href="#faq" class="hover:text-neon-lime transition-colors">Global Shipping</a></li>
+                    <li><a href="#faq" class="hover:text-neon-lime transition-colors">Returns & Exchanges</a></li>
+                    <li><a href="#faq" class="hover:text-neon-lime transition-colors">Size Guide</a></li>
+                    <li><a href="#faq" class="hover:text-neon-lime transition-colors">Contact Support</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-heading font-bold text-white text-xs uppercase tracking-wider mb-4">Secure Global Payments</h4>
+                <div class="flex flex-wrap gap-2 text-xs text-gray-300">
+                    <span class="bg-vibe-900 border border-vibe-800 px-2 py-1 rounded">Visa</span>
+                    <span class="bg-vibe-900 border border-vibe-800 px-2 py-1 rounded">Mastercard</span>
+                    <span class="bg-vibe-900 border border-vibe-800 px-2 py-1 rounded">Apple Pay</span>
+                    <span class="bg-vibe-900 border border-vibe-800 px-2 py-1 rounded">PayPal</span>
+                    <span class="bg-vibe-900 border border-vibe-800 px-2 py-1 rounded">Klarna</span>
+                </div>
+            </div>
+        </div>
+        <div class="container mx-auto border-t border-vibe-900 pt-6 flex flex-col sm:flex-row items-center justify-between text-xs text-gray-600">
+            <p>&copy; 2026 Vantage Thread Co. All rights reserved. Worldwide Shipping.</p>
+            <div class="flex gap-6 mt-4 sm:mt-0">
+                <a href="#" class="hover:text-gray-400">Instagram</a>
+                <a href="#" class="hover:text-gray-400">TikTok</a>
+                <a href="#" class="hover:text-gray-400">Discord</a>
+                <a href="#" class="hover:text-gray-400">Twitter / X</a>
+            </div>
+        </div>
+    </footer>
+
+    <div x-show="popupOpen" x-cloak class="fixed inset-0 z-50 flex items-center justify-center bg-vibe-950/80 backdrop-blur-sm p-4">
+        <div @click.away="popupOpen = false" class="bg-vibe-900 border border-vibe-800 rounded-lg max-w-md w-full p-8 relative space-y-6 shadow-2xl">
+            <button @click="popupOpen = false" class="absolute top-4 right-4 text-gray-400 hover:text-white text-xl">&times;</button>
+            <div class="text-center space-y-3">
+                <div class="w-12 h-12 rounded-full bg-neon-lime/20 text-neon-lime mx-auto flex items-center justify-center font-bold text-xl">⚡</div>
+                <h3 class="font-heading font-bold text-2xl text-white" x-text="popupTitle"></h3>
+                <p class="text-gray-300 text-sm" x-text="popupMessage"></p>
+            </div>
+            <button @click="popupOpen = false" class="w-full bg-neon-lime hover:bg-neon-hover text-vibe-950 font-extrabold uppercase text-xs py-3.5 rounded transition-colors">
+                Continue
+            </button>
+        </div>
+    </div>
+
+</body>
+</html>
